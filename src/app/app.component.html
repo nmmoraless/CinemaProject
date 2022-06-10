@@ -1,0 +1,214 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">{{title}}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Peliculas</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://cdn.pixabay.com/photo/2015/09/21/14/46/banner-949931__340.jpg" alt="">
+
+        <div class="container">
+          <div class="carousel-caption text-start">
+            <h1>Encuentra los últimos estrenos.</h1>
+            <p>Some representative placeholder content for the first slide of the carousel.</p>
+            <p><a class="btn btn-lg btn-light" href="#">Sign up today</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://cdn.pixabay.com/photo/2020/08/26/21/27/et-5520729_960_720.jpg" alt="">
+
+        <div class="container">
+          <div class="carousel-caption">
+            <h1>Ven y diviertete con tu familia</h1>
+            <p>Some representative placeholder content for the second slide of the carousel.</p>
+            <p><a class="btn btn-lg btn-light" href="#">Learn more</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://cdn.pixabay.com/photo/2019/02/10/09/51/photographer-3986846_960_720.jpg" alt="">
+
+        <div class="container">
+          <div class="carousel-caption text-end">
+            <h1>Disfruta los mejores cortometrajes</h1>
+            <p>Some representative placeholder content for the third slide of this carousel.</p>
+            <p><a class="btn btn-lg btn-light" href="#">Browse gallery</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+  <!-- Películas en cartelera
+  ================================================== -->
+
+  <div class="container">
+
+    <h1 class="text-center mb-5 tituloP">PELÍCULAS EN CARTELERA</h1>
+
+    <div class="row mb-5">
+      <div class="card col-12 p-0 col-md" *ngFor="let movie  of peliculas; let i = index;">
+        <img [src]="movie.poster" alt="{{movie.titulo}}" width="100%">
+        <div class="card-body">
+          <h5 class="card-title text-info">{{movie.titulo}}</h5>
+          <p class="card-text"><b>Genero: </b>{{movie.genero}}, <b>Año: </b>{{movie.anio}}</p>
+          <a href="#sala" class="btn btn-dark" (click)="mostrarSala(i)">Reservar</a>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.container Cartelera -->
+
+  <!-- Salas
+  ================================================== -->
+
+  <div id="sala" class="container d-block" *ngIf="ubicacionSala != -1">
+    <h2 class="text-center mb-4">Selecciona tus sillas</h2>
+    <div class="bg-dark p-5 container-sillas">
+      <div class="pantalla text-center">Pantalla</div>
+
+      <div class="d-flex silla-headers">
+        <div class="numeroSilla" *ngFor="let asiento of this.asientosFila; let i = index">
+          <p class="mb-0 idSilla" >{{i+1}}</p>
+        </div>           
+      </div>
+
+      <div class="inline p-2" *ngFor="let fila of this.peliculas[ubicacionSala].sala; let i=index">
+        <div class="d-flex align-items-center pe-2">
+          <p class="mb-0 idSilla">F{{i+1}}</p>
+        </div> 
+        <div *ngFor="let silla of fila; let j=index">
+          <svg (click)="cambioEstado(i,j)" *ngIf="!silla" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-armchair" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#00b341" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 11a2 2 0 0 1 2 2v2h10v-2a2 2 0 1 1 4 0v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-4a2 2 0 0 1 2 -2z" />
+            <path d="M5 11v-5a3 3 0 0 1 3 -3h8a3 3 0 0 1 3 3v5" />
+            <path d="M6 19v2" />
+            <path d="M18 19v2" />
+          </svg>
+          <svg (click)="cambioEstado(i,j)" *ngIf="silla" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-armchair" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#00abfb" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 11a2 2 0 0 1 2 2v2h10v-2a2 2 0 1 1 4 0v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-4a2 2 0 0 1 2 -2z" />
+            <path d="M5 11v-5a3 3 0 0 1 3 -3h8a3 3 0 0 1 3 3v5" />
+            <path d="M6 19v2" />
+            <path d="M18 19v2" />
+          </svg>
+        </div>
+      </div>
+    </div> 
+    
+    <!-- Button trigger modal -->
+    <div class="d-flex justify-content-center mt-3">
+      <button type="button text-center" class="btn btn-success mb-5" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+        Reservar
+      </button>
+    </div>
+
+  </div><!--Cierre #Sala-->
+</main>
+
+<!-- Modal -->
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">Confirmación de Reserva</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-danger fw-bold">Las sillas seleccionadas es: Fila {{coordenada[0]}} y Silla {{coordenada[1]}}</p>
+        <form>
+          <div class="mb-3">
+            <label for="name" class="form-label">Tu nombre completo:</label>
+            <input (input)="modificarNombreCliente($event)" type="text" class="form-control" id="name" aria-describedby="emailHelp" required>
+
+            <label for="email" class="form-label">Email:</label>
+            <input (input)="modificarEmailCliente($event)" type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
+            <div id="emailHelp" class="form-text">Ingresa tu correo para confirmar la reserva</div>
+
+            <label for="telefono" class="form-label">Teléfono:</label>
+            <input (input)="modificarTelefonoCliente($event)" type="text" class="form-control" id="telefono" aria-describedby="emailHelp" required>
+
+            <label for="creditCard" class="form-label">No. Tarjeta:</label>
+            <input (input)="modificarNoTarjetaCliente($event)" type="text" class="form-control" id="creditCard" aria-describedby="emailHelp" required>
+
+          </div>
+
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Autorizo el tratamiento de mis datos personales</label>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-success" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Reservar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="exampleModalToggleLabel2"><b>Reserva Exitosa</b></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Hola <b>{{datosCliente.nombre}}</b>,
+          confirmamos tu reserva de boletos, la cual fue enviada al corrreo: <span class="text-primary">{{datosCliente.email}}</span>. <br>En caso de la función sea cancelada te enviaremos un mensaje al número registrado: <span class="text-primary">{{datosCliente.telefono}}</span><br>
+          Recuerda la ubicación de tu silla: <b class="text-success">Fila {{coordenada[0]}} y Silla {{coordenada[1]}}.</b> 
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-dark p-3">
+  <div class="container">
+    <p class="float-end mb-0"><a class="text-light" href="#">Back to top</a></p>
+    <p class="mb-0 text-light">&copy; 2022 Company, Inc. &middot; <span><a class="text-light" href="#">Privacy</a></span>  &middot; <span><a class="text-light" href="#">Terms</a></span></p>
+  </div>
+</footer>
